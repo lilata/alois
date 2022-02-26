@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Comments for: {{ .Key }}</title>
+</head>
+<body>
+<h1>Comments for {{ .Key }}</h1>
+{{ if .KeyIsUrl }}
+<h2>Go back to <a href="{{ .Key }}">{{ .Key }}</a></h2>
+{{ end }}
+<hr>
+{{ if .SubmitError }}
+<h3><em>Error:</em> There was something wrong when adding your comment.</h3>
+{{ end }}
+<form action="{{ .CommentUrl }}" method="POST">
+    <input type="hidden" name="key" value="{{ .Key }}">
+    Your Username:<br>
+    <input type="text" name="username"><br>
+    Your Content:<br>
+    <textarea name="content" id="" cols="50" rows="10" res></textarea><br>
+    <button type="submit">Add Comment</button>
+</form>
+<hr>
+{{ range .Comments }}
+<b>{{ .Username }}</b> says at <b>{{ .StringTime }}</b>:<br>
+<p>{{ .Content }}</p>
+<hr>
+{{ end }}
+</body>
+</html>

@@ -1,0 +1,4 @@
+package main
+const ListenPort =1333
+const DBPath = "./alois.db"
+const URLAliasLength = 5
