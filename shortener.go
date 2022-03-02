@@ -75,6 +75,9 @@ func addUrlAlias(w http.ResponseWriter, r *http.Request) {
 	}
 	scheme := getUrlScheme(r)
 	host := r.Host
+	if (len(ShortenerHost) != 0) {
+		host = ShortenerHost
+	}
 	if len(alias) != 0 {
 		w.Write([]byte(fmt.Sprintf("%s://%s/s/%s", scheme, host, alias)))
 		return
