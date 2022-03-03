@@ -58,6 +58,7 @@ func renderComments(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	key := r.Form.Get("key")
 	submitError := r.Form.Get("submit_error")
+	iframe := r.Form.Get("iframe")
 	if len(key) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -87,12 +88,14 @@ func renderComments(w http.ResponseWriter, r *http.Request) {
 		KeyIsUrl bool
 		CommentUrl string
 		SubmitError bool
+		Iframe bool
 	} {
 		Key: key,
 		Comments: comments,
 		KeyIsUrl: keyIsUrl,
 		CommentUrl: commentUrl,
 		SubmitError: submitError == "1",
+		Iframe: iframe == "1",
 	}
 	err = t.Execute(w, data)
 	if err != nil {

@@ -1,0 +1,9 @@
+form, #go-back-link, #title {
+    display: none;
+}
+
+main {
+    width: 80vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}

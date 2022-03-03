@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    {{ if .Iframe }}
+    <link rel="stylesheet" href="/comments-iframe.css">
+    {{ end }}
     <title>Comments for: {{ .Key }}</title>
 </head>
 <body>
-<h1>Comments for {{ .Key }}</h1>
+<h1 id="title">Comments for {{ .Key }}</h1>
 {{ if .KeyIsUrl }}
-<h2>Go back to <a href="{{ .Key }}">{{ .Key }}</a></h2>
+<h2 id="go-back-link">Go back to <a href="{{ .Key }}">{{ .Key }}</a></h2>
 {{ end }}
 <hr>
 {{ if .SubmitError }}
@@ -23,10 +26,12 @@
     <button type="submit">Add Comment</button>
 </form>
 <hr>
+<main>
 {{ range .Comments }}
 <b>{{ .Username }}</b> says at <b>{{ .StringTime }}</b>:<br>
 <p>{{ .Content }}</p>
 <hr>
 {{ end }}
+</main>
 </body>
 </html>
