@@ -14,7 +14,7 @@ func genAlias() string {
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 			"abcdefghijklmnopqrstuvwxyz" +
 			"0123456789" +
-			"-._~",
+			"-_~",
 	)
 	rand.Seed(time.Now().UnixNano())
 	var runes []rune
