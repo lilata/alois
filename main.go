@@ -20,7 +20,13 @@ func main() {
 	r.Use(handlers.ProxyHeaders)
 	addCommentRouter(r)
 	addShortenerRouter(r)
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Location", "/web")
+		w.WriteHeader(http.StatusFound)
+		return
+	})
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
+
 	log.Println("Alois API starts...")
 	http.ListenAndServe(":" + strconv.Itoa(ListenPort), r)
 

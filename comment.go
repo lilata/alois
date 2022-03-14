@@ -26,13 +26,19 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	redirectTo := fmt.Sprintf("%s://%s/comment/render?key=%s", getUrlScheme(r), r.Host, key)
-	if len(username) == 0 || len(content) == 0 {
-		redirectTo = fmt.Sprintf("%s&submit_error=1", redirectTo)
-		w.Header().Set("Location", redirectTo)
-		w.WriteHeader(http.StatusFound)
-		return
+	var redirectTo string
+	if len(r.Header.Get("Referer")) == 0 {
+		redirectTo = fmt.Sprintf("%s://%s/comment/render?key=%s", getUrlScheme(r), r.Host, key)
+		if len(username) == 0 || len(content) == 0 {
+			redirectTo = fmt.Sprintf("%s&submit_error=1", redirectTo)
+			w.Header().Set("Location", redirectTo)
+			w.WriteHeader(http.StatusFound)
+			return
+		}
+	} else {
+		redirectTo = r.Header.Get("Referer")
 	}
+
 	t := time.Now().Unix()
 	db := getDb()
 	defer db.Close()
