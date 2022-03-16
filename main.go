@@ -20,6 +20,7 @@ func main() {
 	r.Use(handlers.ProxyHeaders)
 	addCommentRouter(r)
 	addShortenerRouter(r)
+	addWebRouter(r)
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Location", "/web")
 		w.WriteHeader(http.StatusFound)
