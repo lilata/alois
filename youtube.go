@@ -27,7 +27,7 @@ func pipedURIs() []string {
 	var uris []string
 	for _, name := range names {
 		uri := strings.TrimSuffix(name.Name, " (Official)")
-		uris = append(uris, uri)
+		uris = append(uris, "https://" + uri)
 	}
 	return uris
 }
