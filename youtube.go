@@ -27,7 +27,7 @@ func pipedURIs() []string {
 	var uris []string
 	for _, name := range names {
 		uri := strings.TrimSuffix(name.Name, " (Official)")
-		uris = append(uris, "https://" + uri)
+		uris = append(uris, uri)
 	}
 	return uris
 }
@@ -46,20 +46,31 @@ func invidiousURIs() []string{
 	var clearWebUris []string
 	for _, uri := range uris {
 		if !strings.HasSuffix(uri[0], "onion") {
-			clearWebUris = append(clearWebUris, "https://" + uri[0])
+			clearWebUris = append(clearWebUris, uri[0])
 		}
 	}
 	return clearWebUris
 }
+func getAllYoutubeInstances() (uris []string) {
+	uris = append(invidiousURIs(), pipedURIs()...)
+	return
+}
+func randomYoutubeInstance(w http.ResponseWriter, r *http.Request) {
+	uris := getAllYoutubeInstances()
+	instance := uris[rand.Intn(len(uris))]
+	w.Header().Set("Location", fmt.Sprintf("https://%s", instance))
+	w.WriteHeader(http.StatusFound)
+}
 func watchYoutube(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	watchId := r.Form.Get("v")
-	uris := append(invidiousURIs(), pipedURIs()...)
+	uris := getAllYoutubeInstances()
 	idx := rand.Intn(len(uris))
-	w.Header().Set("Location", fmt.Sprintf("%s/watch?v=%s", uris[idx], watchId))
+	w.Header().Set("Location", fmt.Sprintf("https://%s/watch?v=%s", uris[idx], watchId))
 	w.WriteHeader(http.StatusFound)
 }
 func addYoutubeRouter(r *mux.Router) {
 	ytbRouter := r.PathPrefix("/ytb").Subrouter()
 	ytbRouter.HandleFunc("/watch", watchYoutube)
+	ytbRouter.HandleFunc("/random", randomYoutubeInstance)
 }
